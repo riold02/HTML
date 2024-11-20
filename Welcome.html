@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào Mừng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #greeting {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f7e7;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            display: none;
+            font-size: 14px;
+        }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .history li {
+            background-color: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .history li button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .history li button:hover {
+            background-color: #e63946;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Chào Mừng Bạn!</h2>
+        <label for="username">Nhập tên của bạn:</label>
+        <input type="text" id="username" placeholder="Tên của bạn">
+        <button id="submitBtn">Chào!</button>
+        <div id="greeting"></div>
+        <div class="error" id="error">Vui lòng nhập tên hợp lệ (tối thiểu 3 ký tự).</div>
+        <div class="history">
+            <h3>Lịch Sử Tên:</h3>
+            <ul id="historyList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const usernameInput = document.getElementById('username');
+        const submitBtn = document.getElementById('submitBtn');
+        const greetingDiv = document.getElementById('greeting');
+        const errorDiv = document.getElementById('error');
+        const historyList = document.getElementById('historyList');
+
+        let history = [];
+
+        submitBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim();
+
+            if (username.length >= 3) {
+                greetingDiv.textContent = `Chào mừng, ${username}!`;
+                greetingDiv.style.display = 'block';
+
+                if (!history.includes(username)) {
+                    history.push(username);
+                    updateHistory();
+                }
+
+                errorDiv.style.display = 'none';
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        function updateHistory() {
+            historyList.innerHTML = '';
+            history.forEach(function(name, index) {
+                const li = document.createElement('li');
+                li.textContent = name;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Xóa';
+                deleteButton.onclick = function() {
+                    history.splice(index, 1);
+                    updateHistory();
+                };
+
+                li.appendChild(deleteButton);
+                historyList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
